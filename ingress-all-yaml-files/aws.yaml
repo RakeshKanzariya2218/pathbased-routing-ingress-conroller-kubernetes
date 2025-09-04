@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: aws
+  labels:
+    app: aws
+spec: 
+  replicas: 2
+  selector: 
+    matchLabels: 
+      app: aws
+  template: 
+    metadata: 
+      labels: 
+        app: aws
+    spec: 
+      containers: 
+        - name: aws-container
+          image: 451947743144.dkr.ecr.us-east-1.amazonaws.com/aws@sha256:d4d66bf52d586449840f2b7dffc9a897c11a1f08e556acf98a873e002df4768b
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: aws-service
+spec: 
+  type: ClusterIP
+  selector:
+    app: aws
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
